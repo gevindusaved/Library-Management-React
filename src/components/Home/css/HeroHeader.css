@@ -1,0 +1,13 @@
+.image-conatainer{
+  height: 400px;
+  width: 100%;
+  background-color: aqua;
+  z-index: 2;
+  overflow: hidden;
+  align-items: center;
+}
+img{
+  width: 100%;
+  height: 100%;
+  align-items: center;
+}
