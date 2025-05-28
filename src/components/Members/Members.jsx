@@ -1,96 +1,109 @@
-import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom"; // ✅ added useNavigate
-import api from "../../api/axiosConfig";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "../../api/axiosConfig";
 import "./css/Members.css";
+import AddMember from "./AddMember";
+import ViewMember from "./ViewMembers";
 
 const Members = () => {
   const { username } = useParams();
-  const navigate = useNavigate(); // ✅ initialize it
-  const [fixedDepositId, setFixedDepositId] = useState("");
-  const [fixedDeposits, setFixedDeposits] = useState([]);
-  const [error, setError] = useState(null);
+  const [activeFeature, setActiveFeature] = useState("viewmember");
+  const [query, setQuery] = useState("");
+  const [members, setMembers] = useState([]);
+  const [isSearchActive, setIsSearchActive] = useState(false);
 
-  const fetchFixedDeposits = async () => {
-    if (!fixedDepositId.trim()) {
-      setError("Please enter a Fixed Deposit ID");
-      return;
-    }
+  const handleSearch = () => {
+    if (!query.trim()) return;
 
-    try {
-      const response = await api.post("/api/v1/fdeposits/lookup", {
-        fixedDepositId,
-        username,
+    axios
+      .get(`http://localhost:8080/api/members/id/${query}`)
+      .then((response) => {
+        setMembers([response.data]); // assuming one result
+        setIsSearchActive(true);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
       });
+  };
 
-      setFixedDeposits([response.data]);
-      setError(null);
-      navigate(`/users/${username}`);
-    } catch (err) {
-      setError("No fixed deposit found or access denied.");
-      setFixedDeposits([]);
-      console.error(err);
+  const images = [
+    "/assets/0032079a-ebf7-4fde-aee8-2ad4109abe56.jpeg",
+    "/assets/433663a2-d1df-4ee3-82db-0aa4f7ccfd5a.jpeg",
+    "/assets/Bold Minimalism Graphic Design Trends 2023 Poster Design by Zeka Design.jpeg",
+    "/assets/cc1089ba-ba69-4d02-8d03-60c0f3047e48.jpeg",
+    "/assets/_ (8).jpg",
+  ];
+
+  const renderFeature = () => {
+    switch (activeFeature) {
+      case "viewmember":
+        return <ViewMember username={username} />;
+      case "addmember":
+        return <AddMember username={username} />;
+      default:
+        return <ViewMember username={username} />;
     }
   };
 
   return (
-    <div className="hero-header">
-      <h2 className="check-fixed-deposit-h2">Check Fixed Deposits</h2>
-      <form
-      className="content-acc-form"
-      onSubmit={(e) => {
-        e.preventDefault(); // prevent form reload
-        fetchFixedDeposits();
-      }}
-    >
-      <div className="form-fixed-deposit-container">
-        <div className="fixed-deposit-container">
-          <label htmlFor="fixedDepositId">Enter Account ID:</label>
+    <div className="member-container">
+      <header className="member-navbar-container">
+        <div className="phantom-div"></div>
+
+        <nav className="member-navbar-panel">
+          <div className="member-nav-pannel-container">
+            <button
+              className="member-nav-links"
+              onClick={() => {
+                setIsSearchActive(false);
+                setActiveFeature("viewmember");
+              }}
+            >
+              View Member
+            </button>
+            <button
+              className="member-nav-links"
+              onClick={() => {
+                setIsSearchActive(false);
+                setActiveFeature("addmember");
+              }}
+            >
+              Add Member
+            </button>
+          </div>
+        </nav>
+
+        <div className="search-bar">
           <input
-            type="text"
-            id="fixedDepositId"
-            value={fixedDepositId}
-            onChange={(e) => setFixedDepositId(e.target.value)}
-            required
+            placeholder="Search by ID, title, or author"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
           />
+          <button onClick={handleSearch}>Search</button>
         </div>
+      </header>
 
-        <button type="submit" className="fixed-deposit-container-button">
-          Search
-        </button>
-      </div>
-
-      {/* Conditional Rendering Block */}
-      {fixedDeposits.length > 0 ? (
-        <>
-          {fixedDeposits.map((fd) => (
-            <div key={fd.fixedDepositId} className="message-response">
-              <p>
-                <strong>Fixed Deposit ID:</strong> {fd.fixedDepositId}
-              </p>
-              <p>
-                <strong>Amount:</strong> {fd.deposit_amount}
-              </p>
-              <p>
-                <strong>Interest Rate:</strong> {fd.interest_rate}%
-              </p>
-              <p>
-                <strong>Maturity Date:</strong> {fd.maturity_date}
-              </p>
-              <p>
-                <strong>Current Balance:</strong>{" "}
-                {fd.current_balance.toFixed(2)}
-              </p>
-              <p>
-                <strong>Full Amount on Maturity:</strong>{" "}
-                {fd.full_amount.toFixed(2)}
-              </p>
+      {members.length > 0 && isSearchActive ? (
+        <div className="card-grid">
+          {members.map((member, index) => (
+            <div className="card-container" key={member.id || index}>
+              <div className="img-card-container">
+                <img
+                  className="img-img"
+                  src={images[index % images.length]}
+                  alt={member.name}
+                />
+              </div>
+              <div className="text-card-container">
+                <h3 className="topic-card">{member.name}</h3>
+                <p className="para-card">{member.email}</p>
+              </div>
             </div>
           ))}
-        </>
+        </div>
       ) : (
-        error && <p className="message-response" style={{ color: "red" }}>{error}</p>
+        <main className="member-content">{renderFeature()}</main>
       )}
-    </form>
     </div>
   );
 };
