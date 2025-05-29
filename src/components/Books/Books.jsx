@@ -103,7 +103,7 @@ const Books = () => {
           </div>
         </nav>
 
-        <div className="search-bar">
+        <div className="book-search-bar">
           <input
             placeholder="Search by ID, title, or author"
             value={query}

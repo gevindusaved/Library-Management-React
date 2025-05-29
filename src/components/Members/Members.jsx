@@ -4,6 +4,7 @@ import axios from "../../api/axiosConfig";
 import "./css/Members.css";
 import AddMember from "./AddMember";
 import ViewMember from "./ViewMembers";
+import HeroHeader from "../Home/HeroHeader";
 
 const Members = () => {
   const { username } = useParams();
@@ -73,7 +74,7 @@ const Members = () => {
           </div>
         </nav>
 
-        <div className="search-bar">
+        <div className="member-search-bar">
           <input
             placeholder="Search by ID, title, or author"
             value={query}
@@ -82,7 +83,7 @@ const Members = () => {
           <button onClick={handleSearch}>Search</button>
         </div>
       </header>
-
+      <HeroHeader />
       {members.length > 0 && isSearchActive ? (
         <div className="card-grid">
           {members.map((member, index) => (

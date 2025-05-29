@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
 .app-main {
   position: absolute;
   display: flex;
@@ -13,28 +14,51 @@
 
 .navbar-container {
   position: fixed;
-  margin: 0;
-  width: 100%;
+  width: 95%;
   z-index: 1000;
-  background-color: #fcfcfce5;
-  padding: 10px 5px 10px 5px;
-  border-bottom: 1px solid #e0e0e0;
+  padding: 6px 5px 5px 5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #f8f8f8;
+  border-radius: 50px;
+  margin: 3px 10px 0px 10px;
+  border: 0.5px solid #7c7c7c;
+  box-shadow: 0px 0px 10px #2020203a;
 }
 
-.main-content{
+.main-content {
   width: 100%;
   position: relative;
   margin: 0px 0 auto 0;
   z-index: 1;
 }
 
-.nav-profile-logo-container{
-  width: 100px;
+h3,
+p {
+  margin: 0;
 }
 
-h3,p{
-  margin: 0;
+.nav-links {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 1px;
+  border: none;
+  background-color: transparent;
+  padding: 5px 17px 5px 17px;
+  color: #202020;
+}
+
+.nav-logo {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  margin-left: 20px;
+  color: #202020;
+}
+
+.nav-profile-logo-container {
+  width: 200px;
 }

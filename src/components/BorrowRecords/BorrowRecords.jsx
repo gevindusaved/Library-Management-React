@@ -73,7 +73,7 @@ const BorrowRecords = () => {
           </div>
         </nav>
 
-        <div className="search-bar">
+        <div className="brecord-search-bar">
           <input
             placeholder="Search by ID, title, or author"
             value={query}
