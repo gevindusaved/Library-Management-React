@@ -71,7 +71,7 @@ const Books = () => {
                 setActiveFeature("viewbook");
               }}
             >
-              View Book
+              View Book {username}
             </button>
             <button
               className="book-nav-links"
